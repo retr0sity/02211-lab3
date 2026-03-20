@@ -1,15 +1,15 @@
 defproc IM(   
-    chan?(int<8>) popIn;
-    chan?(int<8>) dataIn;
-    chan!(bool) inserted;
-    chan!(int<8>) dataOut
+    chan?(int<2>) In;
+    chan!(int<8>) out
 )
 {
-    int<8> storedvalue;
-    int<8> newvalue;
-    bool b;
+    int<11>index;
+    int<3> instructions[2048];//reason for 256 instructions is that index is 8 bit. 
+    
     chp{
-            storedvalue:=100;
+            index=0;
+            instructions="
+
              *[
             [|#dataIn-> dataIn?newvalue;
                 [storedvalue>newvalue-> dataOut!newvalue
