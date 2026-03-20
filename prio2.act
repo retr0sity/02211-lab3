@@ -26,25 +26,34 @@ defproc instr( chan?(int<8>) in;chan!(int<8>) out;)
 }
 
 defproc brainfuck(
-    chan?(int<8>) ins;       ; input: instruction stream
-    chan!(int<8>) outchan;   ; output: the '.' output
+    chan?(int<8>) ins;
+    chan?(int<8>) inchan;
+    chan!(int<8>) outchan;
+    chan!(int<8>) im;
 )
 {
-    int<8> memory[2048];    ; internal memory array, not channels
-    int<11> dp;             ; data pointer (needs to address 0..2047, so 11 bits)
+    int<8> memory[2048];
+    int<11> dp;
+    int<8> cmd;
 
-    chp{
-            (i : 1 :
-    [ ins = '0' -> dp = dp + 1;
-    [] ins = '1' -> dp = dp - 1;
-    [] ins = '2' -> memory[dp] = memory[dp] + 1;
-    [] ins = '3' -> memory[dp] = memory[dp] - 1;
-    [] ins = '4' -> outchan!memory[dp];
-    [] ins = '5' -> [ memory[dp] = 0 ->[im!jump_forward;]] else -> im!+1;
-    [] ins = '7' -> [ memory[dp] != 0 -> im!jump_back;
-        [] else -> im!+1;
+    chp
+    {
+        dp := 0;
+        *[
+            ins?cmd;
+            [ cmd = 0 -> dp := dp + 1;
+           [] cmd = 1 -> dp := dp - 1;
+           [] cmd = 2 -> memory[dp] := memory[dp] + 1;
+           [] cmd = 3 -> memory[dp] := memory[dp] - 1;
+           [] cmd = 4 -> outchan!memory[dp];
+           [] cmd = 5 -> inchan?memory[dp];
+           [] cmd = 6 -> [ memory[dp] = 0 -> im!2;
+                          [] else          -> im!1;
+                         ]
+           [] cmd = 7 -> [ memory[dp] != 0 -> im!3;
+                          [] else           -> im!1;
+                         ]
             ]
         ]
-    )    
     }
 }
