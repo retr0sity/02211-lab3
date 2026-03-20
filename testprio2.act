@@ -1,0 +1,40 @@
+import "prio2.act";
+
+
+ defproc source(
+    chan!(int<8>) push;
+    chan!(bool) pop;
+    chan?(int<8>) popValue  
+    ){
+    int<8> i;
+    chp{
+        i:=7;
+        push!i;
+        i:=5;
+        push!i;
+        i:=8;
+        push!i;
+        log("Should have pushed all the values");
+        
+        pop!;
+        log("I'll be waiting for a val");
+        popValue?i;
+        log("received ",i);
+        pop!;
+        popValue?i;
+        log("received ",i);
+        pop!;
+        popValue?i;
+        log("received ",i)
+        
+
+
+
+    }
+}   
+
+defproc test()
+{
+   source src;
+   prioqueue b(src.push, src.pop,src.popValue);
+}

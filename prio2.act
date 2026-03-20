@@ -1,0 +1,79 @@
+defproc IM(   
+    chan?(int<8>) popIn;
+    chan?(int<8>) dataIn;
+    chan!(bool) inserted;
+    chan!(int<8>) dataOut
+)
+{
+    int<8> storedvalue;
+    int<8> newvalue;
+    bool b;
+    chp{
+            storedvalue:=100;
+             *[
+            [|#dataIn-> dataIn?newvalue;
+                [storedvalue>newvalue-> dataOut!newvalue
+                []storedvalue<=newvalue->dataOut!storedvalue;storedvalue:=newvalue
+                ]
+            
+            []#popIn-> popIn?storedvalue;inserted!
+            
+            |]
+
+        ]
+    }
+}
+
+defproc prioqueue(
+    chan?(int<8>) push;
+    chan?(bool) pop;
+    chan!(int<8>) popValue
+
+){
+    int value;
+    int highestindex;
+    local_cell cells[4];
+    chan!(int<8>) callers[4];
+    chan?(bool) receivers[4];
+    (i:4:callers[i]=cells[i].popIn;cells[i].inserted=receivers[i];)
+    (i:3:cells[i+1].dataOut=cells[i].dataIn;)
+    chan!(int<8>) upperDataIn;
+    upperDataIn=cells[3].dataIn;
+    chan?(int<8>) lowerDataOut;
+    cells[0].dataOut=lowerDataOut;
+
+    //In here I need to set some connections!
+    chp{
+        *[
+            [#push-> 
+                push?value; 
+                /* I TOOK THIS AWAY BECAUSE DYNAMIC CHANNEL ACCESS ISN'T ALLOWED.
+                callers[highestindex]!value;
+                callers[highestindex]?;
+                highestindex:=highestindex+1
+                */
+
+
+                [ highestindex=0->callers[0]!value;receivers[0]?
+                []highestindex=1->callers[1]!value;receivers[1]?
+                []highestindex=2->callers[2]!value;receivers[2]?
+                []highestindex=3->callers[3]!value;receivers[3]?
+                ];
+                highestindex:=highestindex+1
+
+            []#pop->
+                //highestindex:=highestindex-1;
+                pop?;
+                value:=100;
+                upperDataIn!value;
+                log("inserted a value");
+                lowerDataOut?value;
+                log("received a value,which is ",value);
+                popValue!value;
+                highestindex:=highestindex-1
+            ]
+
+        ]
+
+    }
+}
