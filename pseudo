@@ -21,6 +21,9 @@ if(inp!=backward){
 	out!arr[ip]
 	
 }
+}
+}
+
 
 
 

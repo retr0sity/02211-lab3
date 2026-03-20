@@ -24,56 +24,29 @@ defproc IM(
     }
 }
 
-defproc prioqueue(
-    chan?(int<8>) push;
-    chan?(bool) pop;
-    chan!(int<8>) popValue
+defproc brainfuck(
+    chan?(int<8>) ins;       ; input: instruction stream
+    chan!(int<8>) outchan;   ; output: the '.' output
+)
+{
+    int<8> memory[2048];    ; internal memory array, not channels
+    int<11> dp;             ; data pointer (needs to address 0..2047, so 11 bits)
 
-){
-    int value;
-    int highestindex;
-    local_cell cells[4];
-    chan!(int<8>) callers[4];
-    chan?(bool) receivers[4];
-    (i:4:callers[i]=cells[i].popIn;cells[i].inserted=receivers[i];)
-    (i:3:cells[i+1].dataOut=cells[i].dataIn;)
-    chan!(int<8>) upperDataIn;
-    upperDataIn=cells[3].dataIn;
-    chan?(int<8>) lowerDataOut;
-    cells[0].dataOut=lowerDataOut;
-
-    //In here I need to set some connections!
     chp{
-        *[
-            [#push-> 
-                push?value; 
-                /* I TOOK THIS AWAY BECAUSE DYNAMIC CHANNEL ACCESS ISN'T ALLOWED.
-                callers[highestindex]!value;
-                callers[highestindex]?;
-                highestindex:=highestindex+1
-                */
-
-
-                [ highestindex=0->callers[0]!value;receivers[0]?
-                []highestindex=1->callers[1]!value;receivers[1]?
-                []highestindex=2->callers[2]!value;receivers[2]?
-                []highestindex=3->callers[3]!value;receivers[3]?
-                ];
-                highestindex:=highestindex+1
-
-            []#pop->
-                //highestindex:=highestindex-1;
-                pop?;
-                value:=100;
-                upperDataIn!value;
-                log("inserted a value");
-                lowerDataOut?value;
-                log("received a value,which is ",value);
-                popValue!value;
-                highestindex:=highestindex-1
+            (i : 1 :
+    [ ins = '0' -> dp = dp + 1;
+    [] ins = '1' -> dp = dp - 1;
+    [] ins = '2' -> memory[dp] = memory[dp] + 1;
+    [] ins = '3' -> memory[dp] = memory[dp] - 1;
+    [] ins = '4' -> outchan!memory[dp];
+    [] ins = '5' -> [ memory[dp] = 0 -> im!jump_forward;
+    [] else -> im!+1;
             ]
-
+[] ins = '7' ->
+            [ memory[dp] != 0 -> im!jump_back;
+        [] else -> im!+1;
+            ]
         ]
-
+    )    
     }
 }
