@@ -1,10 +1,30 @@
+import sim;
+
 defproc instr(chan?(int<8>) ctrl; chan!(int<8>) out)
 {
     int<8> arr[2048];
     int<11> ip;
+    int<11> loadip;
     int<8> inp;
+    int<8> val;
+    int<32> reader;
+    bool success;
+
     chp
     {
+        loadip := 0;
+        reader := sim::file::openr(0);
+        assert(reader != 0, "Failed to open _infile_.0!");
+
+        *[
+            val := sim::file::read(reader);
+            arr[loadip] := val;
+            loadip := loadip + 1
+        <- ~sim::file::eof(reader) ];
+
+        success := sim::file::closer(reader);
+        assert(success, "Failed to close file!");
+
         ip := 0;
         *[
             ctrl?inp;
