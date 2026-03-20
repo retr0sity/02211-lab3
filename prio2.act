@@ -1,23 +1,22 @@
-defproc instr( chan?(int<8>) in;chan!(int<8>) out;)
+defproc instr(chan?(int<8>) ctrl; chan!(int<8>) out)
 {
-    int<8> arr[2048];     ; program array
-    int<11> ip;           ; instruction pointer
-    int<8> inp;           ; received control signal
-
+    int<8> arr[2048];
+    int<11> ip;
+    int<8> inp;
     chp
     {
         ip := 0;
         *[
-            in?inp;
+            ctrl?inp;
             [ inp = 1 ->
                 ip := ip + 1;
                 out!arr[ip]
            [] inp = 2 ->
-                *[ arr[ip] != ']' -> ip := ip + 1 ];
+                *[ arr[ip] != 7 -> ip := ip + 1 ];
                 ip := ip + 1;
                 out!arr[ip]
            [] inp = 3 ->
-                *[ arr[ip] != '[' -> ip := ip - 1 ];
+                *[ arr[ip] != 6 -> ip := ip - 1 ];
                 ip := ip + 1;
                 out!arr[ip]
             ]
@@ -25,12 +24,7 @@ defproc instr( chan?(int<8>) in;chan!(int<8>) out;)
     }
 }
 
-defproc brainfuck(
-    chan?(int<8>) ins;
-    chan?(int<8>) inchan;
-    chan!(int<8>) outchan;
-    chan!(int<8>) im;
-)
+defproc brainfuck(chan?(int<8>) ins; chan?(int<8>) inchan; chan!(int<8>) outchan; chan!(int<8>) im)
 {
     int<8> memory[2048];
     int<11> dp;
@@ -40,20 +34,20 @@ defproc brainfuck(
     {
         dp := 0;
         *[
-            ins?cmd;
-            [ cmd = 0 -> dp := dp + 1;
-           [] cmd = 1 -> dp := dp - 1;
-           [] cmd = 2 -> memory[dp] := memory[dp] + 1;
-           [] cmd = 3 -> memory[dp] := memory[dp] - 1;
-           [] cmd = 4 -> outchan!memory[dp];
-           [] cmd = 5 -> inchan?memory[dp];
-           [] cmd = 6 -> [ memory[dp] = 0 -> im!2;
-                          [] else          -> im!1;
-                         ]
-           [] cmd = 7 -> [ memory[dp] != 0 -> im!3;
-                          [] else           -> im!1;
-                         ]
-            ]
-        ]
+    ins?cmd;
+    [ cmd = 0 -> dp := dp + 1
+   [] cmd = 1 -> dp := dp - 1
+   [] cmd = 2 -> memory[dp] := memory[dp] + 1
+   [] cmd = 3 -> memory[dp] := memory[dp] - 1
+   [] cmd = 4 -> outchan!memory[dp]
+   [] cmd = 5 -> inchan?memory[dp]
+   [] cmd = 6 -> [ memory[dp] = 0 -> im!2
+                  [] else          -> im!1
+                 ]
+   [] cmd = 7 -> [ memory[dp] != 0 -> im!3
+                  [] else           -> im!1
+                 ]
+    ]
+]
     }
 }
