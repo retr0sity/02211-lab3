@@ -1,31 +1,45 @@
 import "prio2.act";
 
 
- defproc source(
-    chan!(int<8>) push;
-    chan!(bool) pop;
-    chan?(int<8>) popValue  
+ defproc sink(
+    chan?(int<8>) value  
     ){
     int<8> i;
     chp{
-        i:=7;
-        push!i;
-        i:=5;
-        push!i;
-        i:=8;
-        push!i;
-        log("Should have pushed all the values");
+
+        *[value?i;
+        [ i=61 -> log("a")
+        []i=62 -> log("b")
+        [] i=63 -> log("c")
+        [] i=64 -> log("d")
+        [] i=65 -> log("e")
+        [] i=66 -> log("f")
+        [] i=67 -> log("g")
+        [] i=68 -> log("h")
+        [] i=69 -> log("i")
+        [] i=70 -> log("j")
+        [] i=71 -> log("k")
+        [] i=72 -> log("l")
+        [] i=73 -> log("m")
+        [] i=74 -> log("n")
+        [] i=75 -> log("o")
+        [] i=76 -> log("p")
+        [] i=77 -> log("q")
+        [] i=78 -> log("r")
+        [] i=79 -> log("s")
+        [] i=80 -> log("t")
+        [] i=81 -> log("u")
+        [] i=82 -> log("v")
+        [] i=83 -> log("w")
+        [] i=84 -> log("x")
+        [] i=85 -> log("y")
+        [] i=86 -> log("z")
+        ]
         
-        pop!;
-        log("I'll be waiting for a val");
-        popValue?i;
-        log("received ",i);
-        pop!;
-        popValue?i;
-        log("received ",i);
-        pop!;
-        popValue?i;
-        log("received ",i)
+        
+        
+        ]
+
         
 
 
@@ -35,6 +49,6 @@ import "prio2.act";
 
 defproc test()
 {
-   source src;
-   prioqueue b(src.push, src.pop,src.popValue);
+   sink snk;
+   //prioqueue b(src.push, src.pop,src.popValue);
 }
