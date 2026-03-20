@@ -1,0 +1,50 @@
+int ip=0;
+int arr[bigvalue];
+chp{
+
+
+
+In!inp;
+if(inp==+1){inp++;
+	out!arr[ip]}
+if(inp!=forward){
+	while arr[ip]!=']':
+		ip++;
+
+	ip++;
+	out!arr[ip]
+if(inp!=backward){
+	while arr[ip]!='[':
+		ip--;
+
+	ip++;
+	out!arr[ip]
+	
+}
+
+
+
+maincomponent(outchan!int)
+
+	int ins;
+	int memory[bigvalue]
+	int datapointer;
+
+
+ 	chp{
+
+	im?ins
+	if(ins=='>'):dp++;
+	if(ins=='<') dp--;
+	if(+) memory[dp]++;				
+	if(-) same
+	if(.): outchan!memory[dp];
+	if([): check memory[dp]: if(0): send +go to ] to IM
+				else: send +1 to IM.
+	if(]): check memory[dp]: if(not 0) send backward to IM.
+				else: send +1 to IM
+
+
+
+
+}
