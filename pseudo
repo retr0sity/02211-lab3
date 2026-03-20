@@ -42,7 +42,9 @@ maincomponent(outchan!int)
 	if(+) memory[dp]++;				
 	if(-) same
 	if(.): outchan!memory[dp];
-	if([): check memory[dp]: if(0): send +go to ] to IM
+	if([): check memory[dp]: 
+	
+	if(0): send +go to ] to IM
 				else: send +1 to IM.
 	if(]): check memory[dp]: if(not 0) send backward to IM.
 				else: send +1 to IM

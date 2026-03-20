@@ -1,25 +1,26 @@
-defproc IM(   
-    chan?(int<2>) In;
-    chan!(int<8>) out
-)
+defproc instr( chan?(int<8>) in;chan!(int<8>) out;)
 {
-    int<11>index;
-    int<3> instructions[2048];//reason for 256 instructions is that index is 8 bit. 
-    
-    chp{
-            index=0;
-            instructions="
+    int<8> arr[2048];     ; program array
+    int<11> ip;           ; instruction pointer
+    int<8> inp;           ; received control signal
 
-             *[
-            [|#dataIn-> dataIn?newvalue;
-                [storedvalue>newvalue-> dataOut!newvalue
-                []storedvalue<=newvalue->dataOut!storedvalue;storedvalue:=newvalue
-                ]
-            
-            []#popIn-> popIn?storedvalue;inserted!
-            
-            |]
-
+    chp
+    {
+        ip := 0;
+        *[
+            in?inp;
+            [ inp = 1 ->
+                ip := ip + 1;
+                out!arr[ip]
+           [] inp = 2 ->
+                *[ arr[ip] != ']' -> ip := ip + 1 ];
+                ip := ip + 1;
+                out!arr[ip]
+           [] inp = 3 ->
+                *[ arr[ip] != '[' -> ip := ip - 1 ];
+                ip := ip + 1;
+                out!arr[ip]
+            ]
         ]
     }
 }
@@ -39,11 +40,8 @@ defproc brainfuck(
     [] ins = '2' -> memory[dp] = memory[dp] + 1;
     [] ins = '3' -> memory[dp] = memory[dp] - 1;
     [] ins = '4' -> outchan!memory[dp];
-    [] ins = '5' -> [ memory[dp] = 0 -> im!jump_forward;
-    [] else -> im!+1;
-            ]
-[] ins = '7' ->
-            [ memory[dp] != 0 -> im!jump_back;
+    [] ins = '5' -> [ memory[dp] = 0 ->[im!jump_forward;]] else -> im!+1;
+    [] ins = '7' -> [ memory[dp] != 0 -> im!jump_back;
         [] else -> im!+1;
             ]
         ]
