@@ -1,0 +1,45 @@
+defproc IM(
+    chan?(int<4>) insIn;
+    chan!(int<9>) insInDone;
+    chan!(int<3>) insOut;
+    chan?(int<2>) todoNext;
+    chan!(int<1>) done
+    )
+{
+    int<3> insArr[512];
+    int<9> ip;
+    int<9> maxip;
+    int<4> towrite;
+    int<2> todo;
+
+    chp
+    {
+        ip:=0;
+        insIn?towrite;
+
+        *[towrite<8 -> insArr[ip]:=towrite{2..0}; ip:=ip+1; insIn?towrite
+        ];
+
+        maxip:=ip;
+        insInDone!maxip;//This one, I need to verify with. 
+        ip:=0;
+        insOut!insArr[0];
+
+        *[
+            todoNext?todo;
+                [todo=0-> ip:=ip+1
+                []todo=1-> 
+                            *[insArr[ip]!=7->ip:=ip+1];
+                            
+                            ip:=ip+1
+                            //[ip>=maxip->done!]
+                []todo=2-> *[insArr[ip]!=6->ip:=ip-1];ip:=ip+1
+                []todo=3-> log("Why are you fucking dumbass sending 3 into the IM!")
+            ];
+            insOut!insArr[ip]
+        ]
+
+    }
+
+
+}

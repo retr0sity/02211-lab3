@@ -1,0 +1,63 @@
+import "IM.act";
+
+defproc srcandsink(
+    chan!(int<4>) insIn;
+    chan?(int<9>) insInDone
+    )
+{
+    int<9> toprint;
+    chp{
+        toprint:=0;
+        insIn!5;
+        insIn!3;
+        insIn!8;
+        insInDone?toprint;
+        log("we should get 2 because there are 2 non-8 instructions and it is ",toprint)
+
+    }
+}
+
+defproc test()
+{
+   IM im;
+   srcandsink src(im.insIn,im.insInDone);
+
+}
+
+defproc srcandsink2(
+    chan!(int<4>) insIn;
+    chan?(int<9>) insInDone;
+        chan?(int<3>) insOut;
+    chan!(int<2>) todoNext
+    )
+{
+    int<9> toprint;
+    int<3> instoprint;
+    chp{
+        toprint:=0;
+        insIn!6;
+        insIn!6;
+        insIn!2;
+        insIn!1;
+        insIn!7;
+        insIn!4;
+        insIn!8;
+        insInDone?toprint;
+        log("should be 6 instructions and are ",toprint);
+        insOut?instoprint;
+        log("we should have gotten 7 and got ",instoprint);
+        todoNext!1;
+        insOut?instoprint;
+        log("we should have gotten 4 and got ",instoprint)
+
+
+    }
+}
+
+defproc test2()
+{
+   IM im;
+   srcandsink2 src(im.insIn,im.insInDone,im.insOut,im.todoNext);
+
+}
+

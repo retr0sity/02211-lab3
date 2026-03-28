@@ -1,51 +1,69 @@
 import "prio2.act";
 
 
- defproc sink(
+defproc sink(
     chan?(int<8>) value  
     ){
     int<8> i;
     chp{
-
         *[value?i;
-        [ i=61 -> log("a")
-        []i=62 -> log("b")
-        [] i=63 -> log("c")
-        [] i=64 -> log("d")
-        [] i=65 -> log("e")
-        [] i=66 -> log("f")
-        [] i=67 -> log("g")
-        [] i=68 -> log("h")
-        [] i=69 -> log("i")
-        [] i=70 -> log("j")
-        [] i=71 -> log("k")
-        [] i=72 -> log("l")
-        [] i=73 -> log("m")
-        [] i=74 -> log("n")
-        [] i=75 -> log("o")
-        [] i=76 -> log("p")
-        [] i=77 -> log("q")
-        [] i=78 -> log("r")
-        [] i=79 -> log("s")
-        [] i=80 -> log("t")
-        [] i=81 -> log("u")
-        [] i=82 -> log("v")
-        [] i=83 -> log("w")
-        [] i=84 -> log("x")
-        [] i=85 -> log("y")
-        [] i=86 -> log("z")
+        [ i=65 -> log("A")
+        [] i=66 -> log("B")
+        [] i=67 -> log("C")
+        [] i=68 -> log("D")
+        [] i=69 -> log("E")
+        [] i=70 -> log("F")
+        [] i=71 -> log("G")
+        [] i=72 -> log("H")
+        [] i=73 -> log("I")
+        [] i=74 -> log("J")
+        [] i=75 -> log("K")
+        [] i=76 -> log("L")
+        [] i=77 -> log("M")
+        [] i=78 -> log("N")
+        [] i=79 -> log("O")
+        [] i=80 -> log("P")
+        [] i=81 -> log("Q")
+        [] i=82 -> log("R")
+        [] i=83 -> log("S")
+        [] i=84 -> log("T")
+        [] i=85 -> log("U")
+        [] i=86 -> log("V")
+        [] i=87 -> log("W")
+        [] i=88 -> log("X")
+        [] i=89 -> log("Y")
+        [] i=90 -> log("Z")
+        [] i=97 -> log("a")
+        [] i=98 -> log("b")
+        [] i=99 -> log("c")
+        [] i=100 -> log("d")
+        [] i=101 -> log("e")
+        [] i=102 -> log("f")
+        [] i=103 -> log("g")
+        [] i=104 -> log("h")
+        [] i=105 -> log("i")
+        [] i=106 -> log("j")
+        [] i=107 -> log("k")
+        [] i=108 -> log("l")
+        [] i=109 -> log("m")
+        [] i=110 -> log("n")
+        [] i=111 -> log("o")
+        [] i=112 -> log("p")
+        [] i=113 -> log("q")
+        [] i=114 -> log("r")
+        [] i=115 -> log("s")
+        [] i=116 -> log("t")
+        [] i=117 -> log("u")
+        [] i=118 -> log("v")
+        [] i=119 -> log("w")
+        [] i=120 -> log("x")
+        [] i=121 -> log("y")
+        [] i=122 -> log("z")
         ]
-        
-        
-        
         ]
-
-        
-
-
-
     }
-}   
+}
+
 
 defproc test()
 {

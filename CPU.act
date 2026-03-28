@@ -1,0 +1,34 @@
+defproc CPU(
+    chan?(int<3>) insIn;
+    chan!(int<2>) insback;
+    chan!(int<8>) output;
+    chan?(int<8>) input
+)
+{
+    int<8> dataArray[2048];
+    int<11> datap;
+    
+    int<3> ins;
+    chp{
+        *[insIn?ins;
+                    
+                    [ins=0->datap:=datap+1;insback!0
+                    []ins=1->datap:=datap-1;insback!0
+                    []ins=2->dataArray[datap]:=dataArray[datap]+1;insback!0
+                    []ins=3->dataArray[datap]:=dataArray[datap]-1;insback!0
+                    []ins=4->output!dataArray[datap];insback!0
+                    []ins=5->input?dataArray[datap];insback!0;log("received:", dataArray[datap])
+                    []ins=6->[dataArray[datap]=0->insback!1
+                            []dataArray[datap]!=0->insback!0
+                            ]
+                    []ins=7->[dataArray[datap]!=0->insback!2
+                            []dataArray[datap]=0->insback!0
+                            ];log("value at dataPointer: ", dataArray[datap])
+                    ]
+        ]
+    }
+
+
+
+
+}
