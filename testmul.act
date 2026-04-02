@@ -1,0 +1,132 @@
+import "IM.act";
+import "CPU.act";
+
+defproc initIM(
+    chan!(int<4>) insIn;
+    chan?(int<9>) insInDone
+    )
+{
+    int<9> toprint;
+    int<3> instoprint;
+    chp{
+        //This program is to m ultiply any 2 numbers
+        // +++      Number a
+        // >++      Number b
+        // <[>>+>+>+<<<<-]                   
+        // >
+        // -
+        // 
+        // [>>[<+>-]
+        // 
+        // >[<<<<+>>>>-]
+        // <<<<[>>>+>+<<<<-]
+        // >-]
+        // >.           
+        insIn!2; //a=5
+        insIn!2;
+        insIn!2;
+        insIn!2;
+        insIn!2;
+        insIn!0;
+        insIn!2; //b=3
+        insIn!2;
+        insIn!1;
+        insIn!6;
+        insIn!0;
+        insIn!0;
+        insIn!2;
+        insIn!0;
+        insIn!2;
+        insIn!0;
+        insIn!2;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!3;
+        insIn!7;
+        insIn!0;
+        insIn!3;
+        insIn!6;
+        insIn!0;
+        insIn!0;
+        insIn!6;
+        insIn!1;
+        insIn!2;
+        insIn!0;
+        insIn!3;
+        insIn!7;
+        insIn!0;
+        insIn!6;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!2;
+        insIn!0;
+        insIn!0;
+        insIn!0;
+        insIn!0;
+        insIn!3;
+        insIn!7;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!6;
+        insIn!0;
+        insIn!0;
+        insIn!0;
+        insIn!2;
+        insIn!0;
+        insIn!2;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!1;
+        insIn!3;
+        insIn!7;
+        insIn!0;
+        insIn!3;
+        insIn!7;
+        insIn!0;
+        insIn!4;
+
+        
+        insIn!8;
+        insInDone?toprint;
+        log(" instructions are ",toprint)
+        }
+}
+
+defproc dataBuffer (chan!(int<8>) outch)
+{
+    chp
+    {
+        
+    }
+}
+
+defproc dataReceiver(chan?(int<8>) inch)
+{
+    int<8> tp;
+    chp{
+        *[inch?tp;log("output: ",tp)]
+    }
+}
+
+
+defproc test()
+{
+   IM im;
+   initIM src(im.insIn,im.insInDone);
+   dataBuffer db;
+   dataReceiver dr;
+   CPU cpu;
+    dr.inch=cpu.output;
+    db.outch=cpu.input;
+
+    im.insOut=cpu.insIn;
+    im.todoNext=cpu.insback;
+
+}
