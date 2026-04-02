@@ -25,15 +25,15 @@ defproc IM(
         ip:=0;
         insOut!insArr[0];
 
-        *[
+        *[ 
             todoNext?todo;
-                [todo=0-> ip:=ip+1
+                [todo=0-> ip:=ip+1;*[ip>=maxip -> done!;log("out of program due to normal incrementing")]
                 []todo=1-> 
                             *[insArr[ip]!=7->ip:=ip+1];
                             
-                            ip:=ip+1
-                            //[ip>=maxip->done!]
-                []todo=2-> *[insArr[ip]!=6->ip:=ip-1];ip:=ip+1
+                            ip:=ip+1;
+                            *[ip>=maxip -> done!;log("out of the program due to branching upwards!")]
+                []todo=2-> *[insArr[ip]!=6->ip:=ip-1];ip:=ip+1; *[ip>=maxip->done!;log("out of program due to faulty branching downwards!")]
                 []todo=3-> log("Why are you fucking dumbass sending 3 into the IM!")
             ];
             insOut!insArr[ip]

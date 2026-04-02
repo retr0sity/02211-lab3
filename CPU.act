@@ -23,7 +23,7 @@ defproc CPU(
                             ]
                     []ins=7->[dataArray[datap]!=0->insback!2
                             []dataArray[datap]=0->insback!0
-                            ];log("value at dataPointer: ", dataArray[datap])
+                            ]//;log("value at dataPointer: ", dataArray[datap])
                     ]
         ]
     }

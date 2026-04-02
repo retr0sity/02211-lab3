@@ -9,7 +9,7 @@ defproc initIM(
     int<9> toprint;
     int<3> instoprint;
     chp{
-        //This program is to m ultiply any 2 numbers
+        //This program is to multiply any 2 numbers
         // +++      Number a
         // >++      Number b
         // <[>>+>+>+<<<<-]                   
