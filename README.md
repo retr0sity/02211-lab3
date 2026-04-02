@@ -35,15 +35,15 @@ export PATH=$PATH:$ACT_HOME/bin
 
 2. Run the testscript testXXXX.sh 
 
-`
+```
  ./testCPU.sh
-`
+```
 
 3. Execute the simulation script in ActSim:
 
-`
+```
  source testCPU.scr
-`
+```
 
 ### Authors
 Leo Moe - s251885
