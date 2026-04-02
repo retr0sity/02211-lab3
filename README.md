@@ -36,7 +36,8 @@ export PATH=$PATH:$ACT_HOME/bin
 2. Run the testscript testXXXX.sh 
 
 ```
- ./testCPU.sh
+ bash ./testCPU.sh
+ bash ./testmul.sh
 ```
 
 3. Execute the simulation script in ActSim:
@@ -57,3 +58,28 @@ Arjun Babu Anand - s252759
 
 ### References
 Brainfuck specification and documentation - https://en.wikipedia.org/wiki/Brainfuck
+
+
+### How it works. 
+There are 2 main components, the IM (Instruction Memory) and the CPU. A curious reader would notice that I didn't mention the data memory. 
+The DM is an array inside of the CPU.
+The instructions are not encoded as bytes, but instead as 3-bit codes, indicated by their position in the list on the wikipedia page.
+
+The IM does a few things: 
+    1. It initializes by loading in all the instructions from a component we have in the testscripts called the InitIM. 
+        The IM knows it is done when an instruction over 7 is input. For this reason, we finish it by writing 8. 
+    2. It sends instructions out to the CPU. 
+        It does this through an output channel. At the end of init, it sends the instruction on ip (instructionpointer)=0. 
+    3. It receives instructions from the CPU. 
+        The IM will send instructions. 
+        Brainfuck only has conditional branching instructions. 
+        For this reason, the CPU needs to evaluate if the branch instruction actually is a branch instruction. 
+        As such, the IM is told by the IM what to do.
+
+The CPU does a few things. 
+    1. For its main loop, it constantly waits for instructions from IM, executes it and sends back to IM what to do next. 
+    2. For the main instructions, (<,>,+,-), it simply executes the instruction on either the datapointer or the value at the datapointer and then goes on with the day. 
+    3. for the branching instructions, it evaluates the condition and send back to the IM.
+    4. For the . and , it uses the channels to either input or output. These channels need to be supplied in the testbench. 
+    
+        

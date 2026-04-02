@@ -28,7 +28,7 @@ defproc initIM(
         insIn!2;
         insIn!2;
         insIn!0;
-        insIn!2; //b=3
+        insIn!2; //b=2
         insIn!2;
         insIn!1;
         insIn!6;
