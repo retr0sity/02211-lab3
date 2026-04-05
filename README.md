@@ -37,6 +37,7 @@ export PATH=$PATH:$ACT_HOME/bin
 
 ```
  bash ./testCPU.sh
+ bash ./testIM.sh
  bash ./testmul.sh
 ```
 

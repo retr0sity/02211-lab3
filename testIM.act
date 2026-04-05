@@ -45,7 +45,7 @@ defproc srcandsink2(
         insInDone?toprint;
         log("should be 6 instructions and are ",toprint);
         insOut?instoprint;
-        log("we should have gotten 7 and got ",instoprint);
+        log("we should have gotten 6 and got ",instoprint);
         todoNext!1;
         insOut?instoprint;
         log("we should have gotten 4 and got ",instoprint)
