@@ -1,5 +1,4 @@
-# 02211-lab3
-## Brainf*ck CPU in ActSim
+# Brainf*ck CPU in ActSim
 ### Overview
 This project implements a custom CPU in ActSim designed to execute programs written in Brainfuck. Brainfuck is a minimalist programming language consisting of only eight commands. It operates on a linear memory tape and a data pointer that traverses this tape. More about Brainfuck: https://en.wikipedia.org/wiki/Brainfuck
 
